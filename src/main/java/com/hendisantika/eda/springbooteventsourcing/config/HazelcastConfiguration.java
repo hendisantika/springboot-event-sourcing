@@ -1,8 +1,6 @@
 package com.hendisantika.eda.springbooteventsourcing.config;
 
-import com.hazelcast.client.HazelcastClient;
-import com.hazelcast.client.config.ClientConfig;
-import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.config.Config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,10 +15,18 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class HazelcastConfiguration {
+    //    @Bean
+//    public HazelcastInstance hazelcastClient() {
+//        ClientConfig clientConfig = new ClientConfig();
+//        return HazelcastClient.newHazelcastClient(clientConfig);
+//    }
     @Bean
-    public HazelcastInstance hazelcastClient() {
-        ClientConfig clientConfig = new ClientConfig();
-        return HazelcastClient.newHazelcastClient(clientConfig);
+    public Config hazelConfig() {
+
+        Config config = new Config();
+        config.setInstanceName("hazel-test");
+        config.getGroupConfig().setName("dev").setPassword("pass");
+        return config;
     }
 
 }
