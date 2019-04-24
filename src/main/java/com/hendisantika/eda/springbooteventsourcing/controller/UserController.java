@@ -101,4 +101,14 @@ public class UserController {
         return "redirect:/user";
     }
 
+    @PostMapping("/replay")
+    public String replay() {
+        hazelcastInstance.getMap("userList").clear();
+        Long size = redisTemplate.opsForList().size("events");
+        for (int i = 0; i < size; i++) {
+            stringRedisTemplate.convertAndSend("new_events", Integer.toString(i));
+        }
+        return "redirect:/user";
+    }
+
 }
