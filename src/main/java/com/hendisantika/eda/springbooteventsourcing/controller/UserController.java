@@ -5,6 +5,7 @@ import com.hazelcast.core.HazelcastInstance;
 import com.hendisantika.eda.springbooteventsourcing.domain.User;
 import com.hendisantika.eda.springbooteventsourcing.event.EventStoreContainer;
 import com.hendisantika.eda.springbooteventsourcing.event.UserCreatedEvent;
+import com.hendisantika.eda.springbooteventsourcing.event.UserDeactivatedEvent;
 import com.hendisantika.eda.springbooteventsourcing.event.UserVerifiedEvent;
 import com.hendisantika.eda.springbooteventsourcing.repository.UserRepository;
 import org.slf4j.Logger;
@@ -84,6 +85,17 @@ public class UserController {
         Long eventId = redisTemplate.opsForValue().increment("event_ids", 1);
         UserVerifiedEvent userVerifiedEvent = new UserVerifiedEvent(eventId, user.getId(), "mploed");
         Long nextIndex = redisTemplate.opsForList().rightPush("events", new EventStoreContainer(userVerifiedEvent));
+
+        stringRedisTemplate.convertAndSend("new_events", Long.toString(nextIndex - 1));
+        return "redirect:/user";
+    }
+
+    @PostMapping("/deactivate")
+    @Transactional
+    public String deactivate(@ModelAttribute User user, Model model) {
+        Long eventId = redisTemplate.opsForValue().increment("event_ids", 1);
+        UserDeactivatedEvent userDeactivatedEvent = new UserDeactivatedEvent(eventId, user.getId(), "mploed");
+        Long nextIndex = redisTemplate.opsForList().rightPush("events", new EventStoreContainer(userDeactivatedEvent));
 
         stringRedisTemplate.convertAndSend("new_events", Long.toString(nextIndex - 1));
         return "redirect:/user";
