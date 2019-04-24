@@ -5,3 +5,9 @@
 + Go to the folder: `cd springboot-event-sourcing`
 + Run the app: `mvn clean spring-boot:run`
 + Go to your favorite browser: http://localhost:8080/user
+
+## Screen shot
+
+User Management Page
+
+![User Management Page](img/UserManagement.png "User Management Page")
