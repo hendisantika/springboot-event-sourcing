@@ -1,6 +1,6 @@
 package com.hendisantika.eda.springbooteventsourcing.controller;
 
-import com.hazelcast.client.config.ClientConfig;
+import com.hazelcast.config.Config;
 import com.hazelcast.core.HazelcastInstance;
 import com.hendisantika.eda.springbooteventsourcing.domain.User;
 import com.hendisantika.eda.springbooteventsourcing.event.EventStoreContainer;
@@ -51,7 +51,7 @@ public class UserController {
 
     @GetMapping
     public String index(Model model) {
-        ClientConfig cc = new ClientConfig();
+        Config cc = new Config();
 
         Collection userList = hazelcastInstance.getMap("userList").values();
         Collection deactivatedUsers = hazelcastInstance.getMap("deactivatedUsers").values();
